@@ -100,7 +100,9 @@
         {{-- Sección Gráfico dinámico --}}
         <div id="grafico" class="section hidden">
             <h2 class="text-xl font-bold mb-4">Gráfico de Compras por Cliente</h2>
-            <canvas id="comprasChart" class="w-full h-64"></canvas>
+            <div class="bg-white p-6 rounded-lg shadow">
+                <canvas id="comprasChart" height="400"></canvas>
+            </div>
         </div>
     </div>
 </div>
@@ -118,47 +120,79 @@
 
 {{-- Script del gráfico dinámico --}}
 <script>
-    const clientes = {!! json_encode($clientes, JSON_UNESCAPED_UNICODE) !!};
-    const totales = {!! json_encode($totales) !!};
+    document.addEventListener('DOMContentLoaded', function() {
+        const clientes = {!! json_encode($clientes, JSON_UNESCAPED_UNICODE) !!};
+        const totales = {!! json_encode($totales) !!};
 
-    // Verificar si hay datos
-    if (clientes.length === 0 || totales.length === 0) {
-        document.getElementById('comprasChart').style.display = 'none';
-        document.getElementById('comprasChart').parentElement.innerHTML += '<p class="text-gray-500">No hay datos de compras disponibles.</p>';
-    } else {
-        const ctx = document.getElementById('comprasChart').getContext('2d');
-        const comprasChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: clientes,
-                datasets: [{
-                    label: 'Total Compras ($)',
-                    data: totales,
-                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: { 
-                        beginAtZero: true,
-                        ticks: {
-                            callback: function(value) {
-                                return '$' + value.toLocaleString('es-CO');
+        console.log('Clientes:', clientes);
+        console.log('Totales:', totales);
+
+        // Verificar si hay datos
+        if (!clientes || clientes.length === 0 || !totales || totales.length === 0) {
+            const chartContainer = document.getElementById('comprasChart').parentElement;
+            chartContainer.innerHTML = '<p class="text-gray-500 p-4">No hay datos de compras disponibles.</p>';
+            console.log('No hay datos para mostrar en el gráfico');
+            return;
+        }
+
+        // Crear el gráfico
+        try {
+            const chartCanvas = document.getElementById('comprasChart');
+            if (!chartCanvas) {
+                console.error('Canvas con id comprasChart no encontrado');
+                return;
+            }
+
+            const ctx = chartCanvas.getContext('2d');
+            
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: clientes,
+                    datasets: [{
+                        label: 'Total Compras (COP)',
+                        data: totales,
+                        backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 2,
+                        borderRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    indexAxis: 'x',
+                    scales: {
+                        y: { 
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return '$' + value.toLocaleString('es-CO', {
+                                        maximumFractionDigits: 0
+                                    });
+                                }
                             }
                         }
-                    }
-                },
-                plugins: {
-                    legend: {
-                        display: true,
-                        position: 'top'
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        },
+                        title: {
+                            display: true,
+                            text: 'Total de Compras por Cliente'
+                        }
                     }
                 }
-            }
-        });
-    }
+            });
+            
+            console.log('Gráfico creado exitosamente');
+        } catch (error) {
+            console.error('Error creando gráfico:', error);
+            document.getElementById('comprasChart').parentElement.innerHTML = 
+                '<p class="text-red-500 p-4">Error al generar el gráfico: ' + error.message + '</p>';
+        }
+    });
 </script>
 @endsection
