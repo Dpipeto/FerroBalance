@@ -8,16 +8,14 @@ class Payment extends Model
 {
     protected $table = 'Payments';
     protected $primaryKey = 'Id';
-
-    const CREATED_AT = 'CreatedAt';
-    const UPDATED_AT = null; // si no tienes UpdatedAt
+    public $timestamps = true;
 
     protected $fillable = [
         'PaymentDate',
         'Amount',
         'Method',
         'CreatedBy',
-        'CreatedAt',
+        'created_at',
     ];
 
     // Relación con usuario

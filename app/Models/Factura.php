@@ -9,10 +9,7 @@ class Factura extends Model
 {
     protected $table = 'Invoices';
     protected $primaryKey = 'Id';
-
-    // Campos de timestamps personalizados
-    const CREATED_AT = 'CreatedAt';
-    const UPDATED_AT = 'UpdatedAt';
+    public $timestamps = true;
 
     protected $fillable = [
         'InvoiceNumber',
@@ -24,8 +21,8 @@ class Factura extends Model
         'Total',
         'Status',
         'CreatedBy',
-        'CreatedAt',
-        'UpdatedAt'
+        'created_at',
+        'updated_at'
     ];
 
     /**

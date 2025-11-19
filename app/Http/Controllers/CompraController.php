@@ -125,7 +125,6 @@ public function checkout(Request $request)
             'Amount'      => $total,
             'Method'      => 'Efectivo',
             'CreatedBy'   => $user->id,
-            'CreatedAt'   => now(),
             'InvoiceId'   => $factura->Id,
         ]);
 

@@ -17,7 +17,7 @@ class AdminController extends Controller
         $users = User::all();
 
         // Ventas (facturas) ordenadas por fecha
-        $ventas = Factura::with('creador', 'cliente')->orderBy('CreatedAt', 'desc')->get();
+        $ventas = Factura::with('creador', 'cliente')->orderBy('created_at', 'desc')->get();
 
         // Datos para gráfico: total de compras por cliente
         $graficoData = Factura::selectRaw('CustomerId, SUM(Total) as totalCompras')
