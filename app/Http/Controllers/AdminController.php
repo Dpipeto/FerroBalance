@@ -20,8 +20,8 @@ class AdminController extends Controller
         $ventas = Factura::with('creador', 'cliente')->orderBy('created_at', 'desc')->get();
 
         // Datos para gráfico: total de compras por cliente
-        $graficoData = Factura::selectRaw('CustomerId, SUM(Total) as totalCompras')
-            ->groupBy('CustomerId')
+        $graficoData = Factura::selectRaw('"CustomerId", SUM("Total") as totalCompras')
+            ->groupBy('"CustomerId"')
             ->with('cliente')
             ->get();
 
