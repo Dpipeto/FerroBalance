@@ -20,15 +20,25 @@ class AdminController extends Controller
         // Ventas (facturas) ordenadas por fecha
         $ventas = Factura::with('creador', 'cliente')->orderBy('created_at', 'desc')->get();
 
-        // Datos para gráfico: total de compras por cliente
-        $graficoData = Factura::select('CustomerId', DB::raw('SUM("Total") as totalCompras'))
+        // Datos para gráfico: total de compras por cliente - usando raw query
+        $graficoRaw = DB::table('Invoices')
+            ->select('CustomerId', DB::raw('SUM("Total")::numeric as totalCompras'))
             ->groupBy('CustomerId')
-            ->with('cliente')
             ->get();
 
+        // Mapear datos con información de clientes
+        $clientesData = [];
+        foreach ($graficoRaw as $row) {
+            $cliente = \App\Models\Customer::find($row->CustomerId);
+            $clientesData[] = [
+                'name' => $cliente?->Name ?? 'Sin nombre',
+                'total' => (float) $row->totalCompras
+            ];
+        }
+
         // Preparamos arrays planos para el gráfico
-        $clientes = $graficoData->map(fn($f) => (string) ($f->cliente?->Name ?? 'Sin nombre'))->values()->toArray();
-        $totales = $graficoData->pluck('totalCompras')->map(fn($v) => (float) $v)->values()->toArray();
+        $clientes = array_map(fn($c) => $c['name'], $clientesData);
+        $totales = array_map(fn($c) => $c['total'], $clientesData);
 
         return view('dashboard', compact('users', 'ventas', 'clientes', 'totales'));
     }
