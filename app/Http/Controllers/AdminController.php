@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Factura;
+use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
@@ -20,8 +21,8 @@ class AdminController extends Controller
         $ventas = Factura::with('creador', 'cliente')->orderBy('created_at', 'desc')->get();
 
         // Datos para gráfico: total de compras por cliente
-        $graficoData = Factura::selectRaw('"CustomerId", SUM("Total") as totalCompras')
-            ->groupBy('"CustomerId"')
+        $graficoData = Factura::select('CustomerId', DB::raw('SUM("Total") as totalCompras'))
+            ->groupBy('CustomerId')
             ->with('cliente')
             ->get();
 
