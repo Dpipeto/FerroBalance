@@ -22,7 +22,7 @@ class AdminController extends Controller
 
         // Datos para gráfico: total de compras por cliente - usando raw query
         $graficoRaw = DB::table('Invoices')
-            ->select('CustomerId', DB::raw('SUM("Total")::numeric as totalCompras'))
+            ->select('CustomerId', DB::raw('SUM("Total")::numeric as totalcompras'))
             ->groupBy('CustomerId')
             ->get();
 
@@ -30,9 +30,11 @@ class AdminController extends Controller
         $clientesData = [];
         foreach ($graficoRaw as $row) {
             $cliente = \App\Models\Customer::find($row->CustomerId);
+            // PostgreSQL devuelve en minúsculas, accedemos así
+            $total = (float) ($row->totalcompras ?? $row->totalCompras ?? 0);
             $clientesData[] = [
                 'name' => $cliente?->Name ?? 'Sin nombre',
-                'total' => (float) $row->totalCompras
+                'total' => $total
             ];
         }
 
