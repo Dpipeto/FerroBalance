@@ -112,27 +112,26 @@ class FacturaSeeder extends Seeder
             $facturaData['Tax'] = $tax;
             $facturaData['Total'] = $total;
 
-            // Crear factura
-            $factura = Factura::firstOrCreate(
+            // Crear o actualizar factura
+            $factura = Factura::updateOrCreate(
                 ['InvoiceNumber' => $facturaData['InvoiceNumber']],
                 $facturaData
             );
+
+            // Limpiar líneas anteriores
+            FacturaLinea::where('InvoiceId', $factura->Id)->delete();
 
             // Crear líneas de factura
             foreach ($items as $item) {
                 $product = Product::find($item['product_id']);
                 if ($product) {
-                    FacturaLinea::firstOrCreate(
-                        [
-                            'InvoiceId' => $factura->Id,
-                            'ProductId' => $product->Id,
-                        ],
-                        [
-                            'Cantidad' => $item['quantity'],
-                            'Precio' => $product->Price,
-                            'Descuento' => $item['discount'],
-                        ]
-                    );
+                    FacturaLinea::create([
+                        'InvoiceId' => $factura->Id,
+                        'ProductId' => $product->Id,
+                        'Cantidad' => $item['quantity'],
+                        'Precio' => $product->Price,
+                        'Descuento' => $item['discount'],
+                    ]);
                 }
             }
         }

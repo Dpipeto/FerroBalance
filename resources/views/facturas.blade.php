@@ -103,23 +103,33 @@
             <table class="w-full border-collapse border border-gray-300">
                 <thead class="bg-gray-200">
                     <tr>
-                        <th class="border px-4 py-2">ID</th>
+                        <th class="border px-4 py-2">Número</th>
                         <th class="border px-4 py-2">Cliente</th>
                         <th class="border px-4 py-2">Fecha</th>
                         <th class="border px-4 py-2">Total</th>
+                        <th class="border px-4 py-2">Estado</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($facturas as $f)
                         <tr class="hover:bg-gray-100">
-                            <td class="border px-4 py-2">{{ $f->Id }}</td>
-                            <td class="border px-4 py-2">{{ $f->cliente ? $f->cliente->Name : 'Cliente no encontrado' }}</td>
-                            <td class="border px-4 py-2">{{ $f->Date }}</td>
-                            <td class="border px-4 py-2 font-semibold">${{ $f->Total }}</td>
+                            <td class="border px-4 py-2 font-semibold">{{ $f->InvoiceNumber ?? $f->Id }}</td>
+                            <td class="border px-4 py-2">{{ $f->cliente?->Name ?? 'Cliente no encontrado' }}</td>
+                            <td class="border px-4 py-2">{{ $f->Date ? $f->Date->format('d/m/Y H:i') : 'N/A' }}</td>
+                            <td class="border px-4 py-2 font-semibold">${{ number_format($f->Total, 2) }}</td>
+                            <td class="border px-4 py-2">
+                                <span class="px-2 py-1 rounded text-sm font-semibold
+                                    @if($f->Status === 'Pagado') bg-green-200 text-green-800
+                                    @elseif($f->Status === 'Pendiente') bg-yellow-200 text-yellow-800
+                                    @else bg-red-200 text-red-800
+                                    @endif">
+                                    {{ $f->Status ?? 'Pendiente' }}
+                                </span>
+                            </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" class="text-center py-4">No hay facturas registradas.</td>
+                            <td colspan="5" class="text-center py-4 text-gray-500">No hay facturas registradas.</td>
                         </tr>
                     @endforelse
                 </tbody>
