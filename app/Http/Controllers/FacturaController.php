@@ -47,7 +47,7 @@ class FacturaController extends Controller
         $user = Auth::user();
         $factura = Factura::with(['lineas.product', 'cliente'])->findOrFail($id);
 
-        if ($factura->cliente->Email !== $user->Email) {
+        if ($factura->cliente->Email !== $user->email) {
             abort(403, 'No tienes permiso para ver esta factura.');
         }
 

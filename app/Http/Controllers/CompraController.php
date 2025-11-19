@@ -89,8 +89,8 @@ public function checkout(Request $request)
         $tax = $subtotal * 0.19;
         $total = $subtotal + $tax;
 
-        // Buscar el cliente asociado (puede ser por email o IdUsers)
-        $customer = \App\Models\Customer::where('Email', $user->Email)->first();
+        // Buscar el cliente asociado (puede ser por email o id)
+        $customer = \App\Models\Customer::where('Email', $user->email)->first();
 
         if (!$customer) {
             return back()->with('error', 'No existe un cliente asociado a este usuario.');
@@ -106,7 +106,7 @@ public function checkout(Request $request)
             'Tax'           => $tax,
             'Total'         => $total,
             'Status'        => 'Pendiente',
-            'CreatedBy'     => $user->IdUsers,
+            'CreatedBy'     => $user->id,
         ]);
 
         foreach ($cart as $item) {
@@ -124,7 +124,7 @@ public function checkout(Request $request)
             'PaymentDate' => now(),
             'Amount'      => $total,
             'Method'      => 'Efectivo',
-            'CreatedBy'   => $user->IdUsers,
+            'CreatedBy'   => $user->id,
             'CreatedAt'   => now(),
             'InvoiceId'   => $factura->Id,
         ]);

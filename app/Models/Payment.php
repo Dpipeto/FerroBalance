@@ -23,6 +23,6 @@ class Payment extends Model
     // Relación con usuario
     public function user()
     {
-        return $this->belongsTo(User::class, 'CreatedBy', 'IdUsers');
+        return $this->belongsTo(User::class, 'CreatedBy', 'id');
     }
 }

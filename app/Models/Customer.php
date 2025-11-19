@@ -20,6 +20,6 @@ class Customer extends Model
     // Relación inversa con User
     public function user()
     {
-        return $this->belongsTo(User::class, 'UserId', 'IdUsers');
+        return $this->belongsTo(User::class, 'UserId', 'id');
     }
 }

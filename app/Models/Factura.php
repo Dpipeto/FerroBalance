@@ -41,7 +41,7 @@ class Factura extends Model
      */
     public function creador()
     {
-        return $this->belongsTo(User::class, 'CreatedBy', 'IdUsers');
+        return $this->belongsTo(User::class, 'CreatedBy', 'id');
     }
 
     /**

@@ -7,20 +7,12 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Run the migrations - This migration is intentionally empty
+     * The users table is already created by the 0001_01_01_000000 migration
      */
     public function up(): void
     {
-        if (!Schema::hasTable('Users')) {
-            Schema::create('Users', function (Blueprint $table) {
-                $table->id('IdUsers');
-                $table->string('FirstName');
-                $table->string('LastName');
-                $table->string('Email')->unique();
-                $table->string('Password');
-                $table->rememberToken();
-            });
-        }
+        // Empty migration to maintain migration order
     }
 
     /**
@@ -28,6 +20,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('Users');
+        // Empty migration to maintain migration order
     }
 };

@@ -36,12 +36,12 @@
                 <tbody>
                     @foreach($users as $user)
                         <tr>
-                            <td class="border px-4 py-2">{{ $user->IdUsers }}</td>
-                            <td class="border px-4 py-2">{{ $user->FirstName }} {{ $user->LastName }}</td>
-                            <td class="border px-4 py-2">{{ $user->Email }}</td>
+                            <td class="border px-4 py-2">{{ $user->id }}</td>
+                            <td class="border px-4 py-2">{{ $user->name }}</td>
+                            <td class="border px-4 py-2">{{ $user->email }}</td>
                             <td class="border px-4 py-2">{{ $user->role->Name ?? 'Sin rol' }}</td>
                             <td class="border px-4 py-2">
-                                <form action="{{ route('users.updateRole', $user->IdUsers) }}" method="POST">
+                                <form action="{{ route('users.updateRole', $user->id) }}" method="POST">
                                     @csrf
                                     <select name="role_id" class="border rounded px-2 py-1">
                                         @foreach(\App\Models\Role::all() as $role)
@@ -80,7 +80,7 @@
                             <td class="border px-4 py-2">{{ $venta->cliente->Name ?? 'N/A' }}</td>
                             <td class="border px-4 py-2">{{ $venta->Date }}</td>
                             <td class="border px-4 py-2">${{ $venta->Total }}</td>
-                            <td class="border px-4 py-2">{{ $venta->creador->FirstName ?? 'N/A' }} {{ $venta->creador->LastName ?? '' }}</td>
+                            <td class="border px-4 py-2">{{ $venta->creador->name ?? 'N/A' }}</td>
                         </tr>
                     @endforeach
                 </tbody>

@@ -10,32 +10,31 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    protected $table = 'Users';
-    protected $primaryKey = 'IdUsers';
+    protected $table = 'users';
+    protected $primaryKey = 'id';
     public $incrementing = true;
     protected $keyType = 'int';
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $fillable = [
-        'FirstName',
-        'LastName',
-        'Email',
-        'Password',
+        'name',
+        'email',
+        'password',
     ];
 
     protected $hidden = [
-        'Password',
+        'password',
         'remember_token',
     ];
 
     public function getAuthIdentifierName()
     {
-        return 'Email';
+        return 'email';
     }
 
     public function getAuthPassword()
     {
-        return $this->Password;
+        return $this->password;
     }
 
     // Relación con roles
@@ -58,6 +57,6 @@ class User extends Authenticatable
     // ✅ Relación con Customer
     public function customer()
     {
-        return $this->hasOne(Customer::class, 'UserId', 'IdUsers');
+        return $this->hasOne(Customer::class, 'user_id', 'id');
     }
 }

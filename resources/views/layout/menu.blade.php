@@ -34,7 +34,7 @@
                     @endif
 
                     <span class="mr-4">
-                        {{ auth()->user()->FirstName }}
+                        {{ auth()->user()->name }}
                         ({{ auth()->user()->role->Name ?? 'Sin rol' }})
                     </span>
 

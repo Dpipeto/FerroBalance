@@ -13,12 +13,12 @@ class PaymentController extends Controller
 
         $payment = Payment::with('user')->findOrFail($id);
 
-        if ($payment->CreatedBy !== $user->IdUsers) {
+        if ($payment->CreatedBy !== $user->id) {
             abort(403, 'No tienes permiso para ver este pago.');
         }
 
         // Buscar la última factura creada por este usuario
-        $factura = \App\Models\Factura::where('CreatedBy', $user->IdUsers)
+        $factura = \App\Models\Factura::where('CreatedBy', $user->id)
                     ->latest('Date')
                     ->with(['lineas.product', 'customer'])
                     ->first();
