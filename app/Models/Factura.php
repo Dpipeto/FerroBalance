@@ -25,6 +25,13 @@ class Factura extends Model
         'updated_at'
     ];
 
+    protected $casts = [
+        'Date' => 'datetime',
+        'DueDate' => 'datetime',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+
     /**
      * Relación con cliente (Customers)
      */

@@ -115,7 +115,17 @@
                         <tr class="hover:bg-gray-100">
                             <td class="border px-4 py-2 font-semibold">{{ $f->InvoiceNumber ?? $f->Id }}</td>
                             <td class="border px-4 py-2">{{ $f->cliente?->Name ?? 'Cliente no encontrado' }}</td>
-                            <td class="border px-4 py-2">{{ $f->Date ? $f->Date->format('d/m/Y H:i') : 'N/A' }}</td>
+                            <td class="border px-4 py-2">
+                                @if($f->Date)
+                                    @if(is_string($f->Date))
+                                        {{ \Carbon\Carbon::parse($f->Date)->format('d/m/Y H:i') }}
+                                    @else
+                                        {{ $f->Date->format('d/m/Y H:i') }}
+                                    @endif
+                                @else
+                                    N/A
+                                @endif
+                            </td>
                             <td class="border px-4 py-2 font-semibold">${{ number_format($f->Total, 2) }}</td>
                             <td class="border px-4 py-2">
                                 <span class="px-2 py-1 rounded text-sm font-semibold
