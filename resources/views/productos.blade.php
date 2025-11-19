@@ -12,7 +12,7 @@
 
     {{-- SOLO roles internos pueden registrar productos --}}
     @auth
-        @if(auth()->user()->role->Name === 'Cajero' || auth()->user()->role->Name === 'Administrador')
+        @if(auth()->user()->role?->Name === 'Cajero' || auth()->user()->role?->Name === 'Administrador')
         <div class="bg-white/90 p-8 rounded-2xl shadow-lg max-w-2xl w-full mb-10">
             <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Registrar Nuevo Producto</h2>
 
@@ -88,7 +88,7 @@
                             <div class="flex justify-center space-x-3">
                                 {{-- SOLO clientes autenticados pueden añadir al carrito --}}
                                 @auth
-                                    @if(auth()->user()->role->Name === 'Cliente')
+                                    @if(auth()->user()->role?->Name === 'Cliente')
                                         <form action="{{ route('compras.store') }}" method="POST" class="inline">
                                             @csrf
                                             <input type="hidden" name="product_id" value="{{ $p->Id }}">
@@ -100,7 +100,7 @@
                                     @endif
 
                                     {{-- Botones editar/eliminar solo para roles internos --}}
-                                    @if(auth()->user()->role->Name === 'Cajero' || auth()->user()->role->Name === 'Administrador')
+                                    @if(auth()->user()->role?->Name === 'Cajero' || auth()->user()->role?->Name === 'Administrador')
                                         <a href="{{ route('productos.edit', $p->Id) }}">
                                             <img src="{{ asset('images/actualizar.png') }}" class="w-6 h-6 inline-block" alt="Actualizar" title="Actualizar">
                                         </a>
@@ -127,7 +127,7 @@
 
         {{-- Botón continuar con el pago SOLO para clientes --}}
         @auth
-            @if(auth()->user()->role->Name === 'Cliente')
+            @if(auth()->user()->role?->Name === 'Cliente')
                 <div class="mt-6 text-center">
                     <a href="{{ route('compras.index') }}"
                        class="bg-green-600 text-white font-bold py-2 px-6 rounded hover:bg-green-500 transition">

@@ -39,7 +39,7 @@
                             <td class="border px-4 py-2">{{ $user->id }}</td>
                             <td class="border px-4 py-2">{{ $user->name }}</td>
                             <td class="border px-4 py-2">{{ $user->email }}</td>
-                            <td class="border px-4 py-2">{{ $user->role->Name ?? 'Sin rol' }}</td>
+                            <td class="border px-4 py-2">{{ $user->role?->Name ?? 'Sin rol' }}</td>
                             <td class="border px-4 py-2">
                                 <form action="{{ route('users.updateRole', $user->id) }}" method="POST">
                                     @csrf

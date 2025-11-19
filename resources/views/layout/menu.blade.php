@@ -16,12 +16,12 @@
 
                 @auth
                     {{-- Facturas solo para roles internos --}}
-                    @if(auth()->user()->role->Name === 'Cajero' || auth()->user()->role->Name === 'Almacenista' || auth()->user()->role->Name === 'Administrador')
+                    @if(auth()->user()->role?->Name === 'Cajero' || auth()->user()->role?->Name === 'Almacenista' || auth()->user()->role?->Name === 'Administrador')
                         <a href="{{ route('facturas.index') }}" class="hover:text-blue-200 transition">Facturas</a>
                     @endif
 
                     {{-- Carrito solo para clientes --}}
-                    @if(auth()->user()->role->Name === 'Cliente')
+                    @if(auth()->user()->role?->Name === 'Cliente')
                         <a href="{{ route('compras.index') }}" class="hover:text-blue-200 transition flex items-center">
                             <img src="{{ asset('images/carrito.png') }}" class="w-6 h-6 mr-1" alt="Carrito">
                             Compras
@@ -29,13 +29,13 @@
                     @endif
 
                     {{-- Dashboard solo para administrador --}}
-                    @if(auth()->user()->role->Name === 'Administrador')
+                    @if(auth()->user()->role?->Name === 'Administrador')
                         <a href="{{ route('dashboard') }}" class="hover:text-blue-200 transition">📊 Dashboard</a>
                     @endif
 
                     <span class="mr-4">
                         {{ auth()->user()->name }}
-                        ({{ auth()->user()->role->Name ?? 'Sin rol' }})
+                        ({{ auth()->user()->role?->Name ?? 'Sin rol' }})
                     </span>
 
                     <form method="POST" action="{{ route('logout') }}" class="inline">

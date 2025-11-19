@@ -23,7 +23,7 @@ class RoleMiddleware
 
         // 2. Obtener TODOS los nombres de los roles del usuario
         //    (Esto usa la relación 'public function roles()' de tu modelo User)
-        $userRoleNames = [Auth::user()->role->Name];
+        $userRoleNames = Auth::user()->role ? [Auth::user()->role->Name] : [];
 
 
         // 3. Comprobar si *alguno* de los roles del usuario ($userRoleNames)
