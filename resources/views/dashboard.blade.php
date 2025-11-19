@@ -77,10 +77,10 @@
                     @foreach($ventas as $venta)
                         <tr>
                             <td class="border px-4 py-2">{{ $venta->InvoiceNumber }}</td>
-                            <td class="border px-4 py-2">{{ $venta->cliente->Name ?? 'N/A' }}</td>
-                            <td class="border px-4 py-2">{{ $venta->Date }}</td>
-                            <td class="border px-4 py-2">${{ $venta->Total }}</td>
-                            <td class="border px-4 py-2">{{ $venta->creador->name ?? 'N/A' }}</td>
+                            <td class="border px-4 py-2">{{ $venta->cliente?->Name ?? 'N/A' }}</td>
+                            <td class="border px-4 py-2">{{ $venta->Date ? $venta->Date->format('d/m/Y') : 'N/A' }}</td>
+                            <td class="border px-4 py-2">${{ number_format($venta->Total, 2) }}</td>
+                            <td class="border px-4 py-2">{{ $venta->creador?->name ?? 'N/A' }}</td>
                         </tr>
                     @endforeach
                 </tbody>
