@@ -17,16 +17,21 @@ class FacturaSeeder extends Seeder
         // Obtener datos necesarios
         $customers = Customer::all();
         $products = Product::all();
-        $cajero = User::where('email', 'cajero@ferrobalance.com')->first();
-        $admin = User::where('email', 'admin@ferrobalance.com')->first();
-
-        if (!$customers->count() || !$products->count() || !$cajero) {
-            return; // No crear facturas si no hay datos base
+        $users = User::all();
+        
+        // Si no tenemos datos base, salir
+        if ($customers->isEmpty() || $products->isEmpty() || $users->isEmpty()) {
+            echo "\n⚠️ No hay datos base (customers, products o users). Saltando FacturaSeeder.\n";
+            return;
         }
 
-        // Limpiar facturas existentes (opcional, descomenta si quieres limpiar)
-        // Factura::truncate();
-        // FacturaLinea::truncate();
+        // Usar usuarios disponibles (cualquier usuario)
+        $cajero = $users->first();
+        $admin = $users->count() > 1 ? $users->get(1) : $users->first();
+
+        // Limpiar facturas existentes (de forma segura respetando foreign keys)
+        FacturaLinea::query()->delete();
+        Factura::query()->delete();
 
         // Crear 5 facturas de ejemplo
         $facturas = [
@@ -112,27 +117,26 @@ class FacturaSeeder extends Seeder
             $facturaData['Tax'] = $tax;
             $facturaData['Total'] = $total;
 
-            // Crear o actualizar factura
-            $factura = Factura::updateOrCreate(
-                ['InvoiceNumber' => $facturaData['InvoiceNumber']],
-                $facturaData
-            );
-
-            // Limpiar líneas anteriores
-            FacturaLinea::where('InvoiceId', $factura->Id)->delete();
-
-            // Crear líneas de factura
-            foreach ($items as $item) {
-                $product = Product::find($item['product_id']);
-                if ($product) {
-                    FacturaLinea::create([
-                        'InvoiceId' => $factura->Id,
-                        'ProductId' => $product->Id,
-                        'Cantidad' => $item['quantity'],
-                        'Precio' => $product->Price,
-                        'Descuento' => $item['discount'],
-                    ]);
+            // Crear factura directamente
+            try {
+                $factura = Factura::create($facturaData);
+                
+                // Crear líneas de factura
+                foreach ($items as $item) {
+                    $product = Product::find($item['product_id']);
+                    if ($product) {
+                        FacturaLinea::create([
+                            'InvoiceId' => $factura->Id,
+                            'ProductId' => $product->Id,
+                            'Cantidad' => $item['quantity'],
+                            'Precio' => $product->Price,
+                            'Descuento' => $item['discount'],
+                        ]);
+                    }
                 }
+                echo "✅ Factura {$facturaData['InvoiceNumber']} creada exitosamente\n";
+            } catch (\Exception $e) {
+                echo "❌ Error creando factura {$facturaData['InvoiceNumber']}: " . $e->getMessage() . "\n";
             }
         }
     }
