@@ -24,6 +24,10 @@ class FacturaSeeder extends Seeder
             return; // No crear facturas si no hay datos base
         }
 
+        // Limpiar facturas existentes (opcional, descomenta si quieres limpiar)
+        // Factura::truncate();
+        // FacturaLinea::truncate();
+
         // Crear 5 facturas de ejemplo
         $facturas = [
             [

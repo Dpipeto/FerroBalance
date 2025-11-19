@@ -111,25 +111,44 @@
     const clientes = {!! json_encode($clientes, JSON_UNESCAPED_UNICODE) !!};
     const totales = {!! json_encode($totales) !!};
 
-    const ctx = document.getElementById('comprasChart').getContext('2d');
-    const comprasChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: clientes,
-            datasets: [{
-                label: 'Total Compras',
-                data: totales,
-                backgroundColor: 'rgba(54, 162, 235, 0.6)',
-                borderColor: 'rgba(54, 162, 235, 1)',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: { beginAtZero: true }
+    // Verificar si hay datos
+    if (clientes.length === 0 || totales.length === 0) {
+        document.getElementById('comprasChart').style.display = 'none';
+        document.getElementById('comprasChart').parentElement.innerHTML += '<p class="text-gray-500">No hay datos de compras disponibles.</p>';
+    } else {
+        const ctx = document.getElementById('comprasChart').getContext('2d');
+        const comprasChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: clientes,
+                datasets: [{
+                    label: 'Total Compras ($)',
+                    data: totales,
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: { 
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return '$' + value.toLocaleString('es-CO');
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    }
+                }
             }
-        }
-    });
+        });
+    }
 </script>
 @endsection

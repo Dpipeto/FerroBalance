@@ -21,13 +21,13 @@ class AdminController extends Controller
 
         // Datos para gráfico: total de compras por cliente
         $graficoData = Factura::selectRaw('"CustomerId", SUM("Total") as totalCompras')
-            ->groupBy('CustomerId')
+            ->groupBy('"CustomerId"')
             ->with('cliente')
             ->get();
 
         // Preparamos arrays planos para el gráfico
-        $clientes = $graficoData->map(fn($f) => (string) $f->cliente?->Name)->values()->toArray();
-        $totales = $graficoData->pluck('totalCompras')->values()->toArray();
+        $clientes = $graficoData->map(fn($f) => (string) ($f->cliente?->Name ?? 'Sin nombre'))->values()->toArray();
+        $totales = $graficoData->pluck('totalCompras')->map(fn($v) => (float) $v)->values()->toArray();
 
         return view('dashboard', compact('users', 'ventas', 'clientes', 'totales'));
     }
