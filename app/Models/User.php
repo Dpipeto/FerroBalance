@@ -27,6 +27,8 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    protected $appends = ['role'];
+
     public function getAuthIdentifierName()
     {
         return 'email';
