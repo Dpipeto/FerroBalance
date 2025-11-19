@@ -21,7 +21,7 @@ class AdminController extends Controller
 
         // Datos para gráfico: total de compras por cliente
         $graficoData = Factura::selectRaw('"CustomerId", SUM("Total") as totalCompras')
-            ->groupBy('"CustomerId"')
+            ->groupBy('CustomerId')
             ->with('cliente')
             ->get();
 
