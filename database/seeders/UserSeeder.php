@@ -13,33 +13,33 @@ class UserSeeder extends Seeder
     {
         $users = [
             [
-                'name' => 'Juan Administrador',
+                'name' => 'Felipe Garzon',
                 'email' => 'admin@ferrobalance.com',
-                'password' => Hash::make('password123'),
+                'password' => Hash::make('Admin123.'),
                 'role' => 'Administrador'
             ],
             [
-                'name' => 'María Cajero',
-                'email' => 'cajero@ferrobalance.com',
-                'password' => Hash::make('password123'),
+                'name' => 'Nana Banana',
+                'email' => 'nanabnn@ferrobalance.com',
+                'password' => Hash::make('Nana123.'),
                 'role' => 'Cajero'
             ],
             [
-                'name' => 'Carlos Almacenista',
-                'email' => 'almacen@ferrobalance.com',
-                'password' => Hash::make('password123'),
+                'name' => 'Andres Almacenista',
+                'email' => 'andresfr@ferrobalance.com',
+                'password' => Hash::make('Andres123.'),
                 'role' => 'Almacenista'
             ],
             [
-                'name' => 'Ana Cliente',
-                'email' => 'cliente@ferrobalance.com',
-                'password' => Hash::make('password123'),
+                'name' => 'Santiago Gutierrez',
+                'email' => 'santiguti@gmail.com',
+                'password' => Hash::make('Santi123.'),
                 'role' => 'Cliente'
             ],
             [
                 'name' => 'Juan Romero',
                 'email' => 'jdromero@ferrobalance.com',
-                'password' => Hash::make('password123'),
+                'password' => Hash::make('Diego123.'),
                 'role' => 'Cliente'
             ],
         ];
